@@ -1,0 +1,60 @@
+@import "./node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+body {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.bg-primary {
+  background: #811538 !important;
+  color: white !important;
+}
+
+.bg-secondary {
+  background: #5b0d25 !important;
+  color: white !important;
+}
+
+#header {
+  height: 20rem;
+  width: 100vw;
+  clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 80%);
+  border-bottom: solid 20px #5b0d25;
+}
+
+#header-background {
+  height: 100%;
+  width: 100%;
+  background-image: url("./pattern.png");
+}
+
+#logo-header {
+  position: absolute;
+  z-index: 999;
+  left: 100px;
+  top: 60px;
+}
+
+#logo-image {
+  height: 300px;
+  -webkit-filter: drop-shadow(5px 5px 30px #222);
+  filter: drop-shadow(5px 5px 30px #222);
+}
+#title-container {
+  position: relative;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 50px;
+}
+
+.title {
+  font-size: 80px;
+  -webkit-filter: drop-shadow(5px 5px 10px #111);
+  filter: drop-shadow(5px 5px 10px #111);
+}
+
+#groups-container {
+  margin-top: 50px;
+}

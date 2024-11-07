@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>World Cup 2022</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <div id="logo-header">
+      <img id="logo-image" src="./logo.png" alt="" />
+    </div>
+    <!-- header -->
+    <div id="header" class="bg-primary">
+      <div id="header-background">
+        <div id="title-container">
+          <h1 class="title" style="font-size: 60px">FIFA</h1>
+          <h1 class="title">World Cup</h1>
+        </div>
+      </div>
+    </div>
+    <!-- Qatar -->
+    <div class="d-flex justify-content-center" style="margin-top: 30px">
+      <img src="./qatar-word.png" alt="" style="width: 400px" />
+    </div>
+    <!--Groups  -->
+    <div id="groups-container" class="container">
+      <!-- Standings -->
+      <div class="p-5">
+        <!-- Title Row -->
+        <div class="row">
+          <h1><b>Standings</b></h1>
+          <hr />
+        </div>
+        <!-- Standings Row  -->
+        <div class="row" id="standings"></div>
+      </div>
+      <!-- // -->
+      <hr />
+      <!-- Matches -->
+      <div>
+        <!-- Title Row -->
+        <div class="row" style="margin: 0px">
+          <h1><b>Matches</b></h1>
+          <hr />
+        </div>
+        <!-- Matches Row -->
+        <div class="row" id="matches">
+          <!-- Match Col -->
+          <div class="col-sm-12">
+            <div class="card shadow rounded-pill" style="overflow: hidden">
+              <div class="card-body p-0">
+                <div class="row" style="height: 120px">
+                  <!-- First Team Col-->
+                  <div
+                    class="col-sm-3 bg-primary d-flex justify-content-center align-items-centers"
+                    style="border-right: solid 5px #5b0d25"
+                  >
+                    <div class="mt-4">
+                      <div class="flag">
+                        <img
+                          class="rounded-circle border border-2"
+                          style="width: 40px; height: 40px; object-fit: cover"
+                          src=""
+                          alt=""
+                        />
+                      </div>
+                      <h5 style="margin: auto 4px"><b>BRA</b></h5>
+                    </div>
+                  </div>
+                  <!-- // -->
+                  <!-- Match Info Col -->
+                  <div class="col-sm-6" style="text-align: center">
+                    <h6>Group A</h6>
+                    <h1>X</h1>
+                    <h6>10:00 PM</h6>
+                  </div>
+                  <!-- // -->
+                  <!-- Second Team Col-->
+                  <div
+                    class="col-sm-3 bg-primary d-flex justify-content-center align-items-centers"
+                    style="border-left: solid 5px #5b0d25"
+                  >
+                    <div class="mt-4">
+                      <div class="flag">
+                        <img
+                          class="rounded-circle border border-2"
+                          style="width: 40px; height: 40px; object-fit: cover"
+                          src=""
+                          alt=""
+                        />
+                      </div>
+                      <h5 style="margin: auto 4px"><b>BRA</b></h5>
+                    </div>
+                  </div>
+                  <!-- // -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- // -->
+        </div>
+        <!-- // -->
+      </div>
+      <!-- // -->
+    </div>
+  </body>
+  <script src="./node_modules/axios/dist/axios.min.js"></script>
+  <script>
+    const token = "9b38c58ec52f426184e6847921e13176";
+    const baseUrl = "https://api.football-data.org/v4/competitions/2000";
+    function getStandings() {
+      const url = `${baseUrl}/standings`;
+      axios
+        .get(url, {
+          headers: {
+            "X-Auth-Token": token,
+          },
+        })
+        .then((response) => {
+          const standings = response.data.standings;
+          document.getElementById("standings").innerHTML = "";
+          for (standing of standings) {
+            let tableContent = "";
+            for (row of standing.table) {
+              tableContent += ` <!-- Team  -->
+                <li class="list-group-item">
+                  <div class="row">
+                    <div
+                      class="col-sm-4 d-flex justify-content-center align-items-centers"
+                      style="text-align: center"
+                    >
+                      <span class="flag"
+                        ><img
+                          class="rounded-circle border border-2"
+                          style="width: 40px; height: 40px;object-fit:cover"
+                          src=${row.team.crest}
+                          alt=""
+                      /></span>
+                      <h5 style="margin: auto 4px"><b>${row.team.tla}</b></h5>
+                    </div>
+                    <div class="col-sm-2" style="text-align: center">${row.won}</div>
+                    <div class="col-sm-2" style="text-align: center">${row.lost}</div>
+                    <div class="col-sm-2" style="text-align: center">${row.draw}</div>
+                    <div class="col-sm-2" style="text-align: center">${row.points}</div>
+                  </div>
+                </li>`;
+            }
+            let groupContent = `<div class="col-sm-6 mb-4">
+            <div class="card shadow border-none">
+              <div class="card-header bg-primary" style="text-align: center">
+                <b>${standing.group}</b>
+              </div>
+              <div class="row bg-secondary m-0">
+                <div class="col-sm-4" style="text-align: center">Team</div>
+                <div class="col-sm-2" style="text-align: center">W</div>
+                <div class="col-sm-2" style="text-align: center">L</div>
+                <div class="col-sm-2" style="text-align: center">D</div>
+                <div class="col-sm-2" style="text-align: center">Pts</div>
+              </div>
+              <!-- Teams -->
+              <ul class="list-group list-group-flush">
+                ${tableContent}
+              </ul>
+            </div>
+          </div>`;
+            document.getElementById("standings").innerHTML += groupContent;
+          }
+        });
+    }
+    getStandings();
+
+    function getMatches() {
+      const url = `${baseUrl}/matches`;
+      axios
+        .get(url, {
+          headers: {
+            "X-Auth-Token": token,
+          },
+        })
+        .then((response) => {
+          const matches = response.data.matches;
+          document.getElementById("matches").innerHTML = "";
+          for (match of matches) {
+            const homeTeam = match.homeTeam;
+            const awayTeam = match.awayTeam;
+            const matchContent = ` <div class="col-sm-12">
+            <div class="card shadow rounded-pill mt-5" style="overflow: hidden">
+              <div class="card-body p-0">
+                <div class="row" style="height: 120px">
+                  <!-- First Team Col-->
+                  <div
+                    class="col-sm-3 bg-primary d-flex justify-content-center align-items-centers"
+                    style="border-right: solid 5px #5b0d25"
+                  >
+                    <div class="mt-4">
+                      <div class="flag">
+                        <img
+                          class="rounded-circle border border-2"
+                          style="width: 40px; height: 40px; object-fit: cover"
+                          src="${homeTeam.crest}"
+                          alt=""
+                        />
+                      </div>
+                      <h5 style="margin: auto 4px"><b>${homeTeam.tla}</b></h5>
+                    </div>
+                  </div>
+                  <!-- // -->
+                  <!-- HomeTeam Score -->
+                  <div class="col-sm-1" style="text-align:center;margin:auto 0px">
+                    <h1>${match.score.fullTime.home}</h1>
+                  </div>
+                  <!-- // -->
+                  <!-- Match Info Col -->
+                  <div class="col-sm-4 mt-2" style="text-align: center">
+                    <h6>${match.stage}</h6>
+                    <h1>X</h1>
+                    <h6>${match.group ?? ""}</h6>
+                  </div>
+                  <!-- // -->
+                  <!-- awayTeam Score -->
+                  <div class="col-sm-1" style="text-align:center;margin:auto 0px">
+                    <h1>${match.score.fullTime.away}</h1>
+                  </div>
+                  <!-- // -->
+                  <!-- Second Team Col-->
+                  <div
+                    class="col-sm-3 bg-primary d-flex justify-content-center align-items-centers"
+                    style="border-left: solid 5px #5b0d25"
+                  >
+                    <div class="mt-4">
+                      <div class="flag">
+                        <img
+                          class="rounded-circle border border-2"
+                          style="width: 40px; height: 40px; object-fit: cover"
+                          src="${awayTeam.crest}"
+                          alt=""
+                        />
+                      </div>
+                      <h5 style="margin: auto 4px"><b>${awayTeam.tla}</b></h5>
+                    </div>
+                  </div>
+                  <!-- // -->
+                </div>
+              </div>
+            </div>
+          </div>`;
+            document.getElementById("matches").innerHTML += matchContent;
+          }
+        });
+    }
+    getMatches();
+  </script>
+</html>
